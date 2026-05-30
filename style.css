@@ -1,0 +1,488 @@
+/* ==========================================================================
+   1. GLOBAL CONFIGURATIONS & LIGHT/DARK ROOT THEME MATRIX
+   ========================================================================== */
+:root {
+    --bg-dark: #0a0a0a;
+    --bg-light: #111111;
+    --card-bg: #141416;
+    --border-base: #232326;
+    --text-main: #f5f5f7;
+    --text-muted: #8e8e93;
+    --mono-high: #ffffff;
+    --google-green: #34a853;
+    --google-red: #ea4335;
+    --transition-smooth: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+body.light-mode {
+    --bg-dark: #f5f5f7;
+    --bg-light: #ffffff;
+    --card-bg: #ffffff;
+    --border-base: #e5e5ea;
+    --text-main: #1d1d1f;
+    --text-muted: #6e6e73;
+    --mono-high: #000000;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
+
+body {
+    font-family: 'Geist Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    background-color: var(--bg-dark);
+    color: var(--text-main);
+    font-size: 1rem;
+    line-height: 1.6;
+    overflow-x: hidden;
+    position: relative;
+    transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+.adam-gradient-edge { position: fixed; top: 0; width: 120px; height: 100vh; pointer-events: none; z-index: 999; opacity: 0.8; }
+.edge-left { left: 0; background: linear-gradient(to right, rgba(10, 10, 10, 0.9) 0%, rgba(10, 10, 10, 0) 100%); }
+.edge-right { right: 0; background: linear-gradient(to left, rgba(10, 10, 10, 0.9) 0%, rgba(10, 10, 10, 0) 100%); }
+
+body.light-mode .edge-left { background: linear-gradient(to right, rgba(245, 245, 247, 0.9) 0%, rgba(245, 245, 247, 0) 100%); }
+body.light-mode .edge-right { background: linear-gradient(to left, rgba(245, 245, 247, 0.9) 0%, rgba(245, 245, 247, 0) 100%); }
+
+.section { padding: 7rem 1.5rem; max-width: 900px; margin: 0 auto; border-bottom: 1px solid var(--border-base); }
+.section:last-of-type { border-bottom: none; }
+.adam-section-divider { max-width: 900px; height: 1px; background: var(--border-base); margin: 0 auto; }
+
+/* ==========================================================================
+   2. APP HEADERS & THEME TOGGLE
+   ========================================================================== */
+.navbar {
+    position: fixed; top: 24px; left: 50%; transform: translateX(-50%); 
+    width: calc(100% - 40px); max-width: 860px;
+    display: grid; grid-template-columns: auto 1fr auto; align-items: center;
+    padding: 0.65rem 2rem; border-radius: 99px; z-index: 1000;
+    background: rgba(10, 10, 10, 0.75); backdrop-filter: blur(20px);
+    border: 1px solid var(--border-base); transition: var(--transition-smooth);
+}
+body.light-mode .navbar { background: rgba(255, 255, 255, 0.75); box-shadow: 0 8px 32px rgba(0,0,0,0.03); }
+.logo-link { text-decoration: none; font-size: 0.95rem; font-weight: 700; color: var(--mono-high); }
+.nav-links { display: flex; list-style: none; justify-content: center; gap: 1.8rem; }
+.nav-links a { text-decoration: none; color: var(--text-muted); font-size: 0.85rem; font-weight: 500; transition: var(--transition-smooth); }
+.nav-links a:hover, .nav-links a.active { color: var(--mono-high); }
+
+.theme-switch { display: inline-block; height: 22px; position: relative; width: 40px; }
+.theme-switch input { display: none; }
+.slider { background-color: #232326; bottom: 0; cursor: pointer; left: 0; position: absolute; right: 0; top: 0; border-radius: 34px; transition: .4s; border: 1px solid var(--border-base); }
+.slider:before { background-color: #ffffff; bottom: 2px; content: ""; height: 16px; left: 3px; position: absolute; border-radius: 50%; transition: .4s; width: 16px; }
+input:checked + .slider { background-color: var(--mono-high); }
+input:checked + .slider:before { background-color: var(--bg-dark); transform: translateX(18px); }
+
+/* ==========================================================================
+   3. HERO PANEL & CORE INFRASTRUCTURE
+   ========================================================================== */
+.hero-section { padding-top: 12rem; padding-bottom: 5rem; max-width: 900px; margin: 0 auto; padding-left: 1.5rem; padding-right: 1.5rem; border-bottom: 1px solid var(--border-base); }
+.hero-container { display: flex; align-items: center; justify-content: space-between; gap: 3rem; }
+.hero-content { flex: 0 0 60%; }
+.section-tag-mono { display: inline-block; font-family: monospace; color: var(--text-muted); text-transform: uppercase; letter-spacing: 2px; font-size: 0.75rem; margin-bottom: 1rem; }
+.hero-content h1 { font-size: 3.5rem; font-weight: 700; line-height: 1.1; margin-bottom: 0.5rem; letter-spacing: -2px; color: var(--mono-high); }
+.hero-role-matched { font-family: monospace; color: var(--text-muted); text-transform: none; letter-spacing: 2px; font-size: 0.75rem; margin-bottom: 1.5rem; font-weight: 400; }
+.sub-text { font-size: 1rem; color: var(--text-muted); margin-bottom: 2rem; }
+.hero-inline-actions { display: flex; align-items: center; gap: 1.5rem; margin-top: 1.5rem; }
+.quick-social-logos { display: flex; gap: 0.6rem; }
+.social-logo-btn { width: 42px; height: 42px; border-radius: 10px; background: var(--card-bg); border: 1px solid var(--border-base); color: var(--text-muted); display: flex; align-items: center; justify-content: center; text-decoration: none; transition: var(--transition-smooth); }
+.social-logo-btn:hover { color: var(--mono-high); border-color: var(--text-muted); transform: translateY(-2px); }
+.btn { padding: 0.8rem 1.8rem; font-weight: 600; border-radius: 10px; text-decoration: none; transition: var(--transition-smooth); display: inline-block; font-size: 0.9rem; border: none; cursor: pointer; }
+.btn i { margin-left: 0.5rem; font-size: 0.8rem; }
+.btn-dark-mono { background: var(--mono-high); color: var(--bg-dark); }
+.btn-dark-mono:hover { opacity: 0.9; transform: translateY(-2px); }
+
+/* Tooltip Styling */
+.social-logo-btn::after {
+    content: attr(data-tooltip); /* Grabs text from the HTML attribute */
+    position: absolute;
+    bottom: 105%; /* Positions it right above the button */
+    left: 50%;
+    transform: translateX(-50%) scale(0.8); /* Centers it and shrinks it slightly for animation */
+    color: #fff; /* White text */
+    padding: 6px 10px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-family: sans-serif;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none; /* Prevents the tooltip from interfering with clicks */
+    transition: all 0.2s ease-in-out;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Show tooltip on hover */
+.social-logo-btn:hover::after {
+    opacity: 1;
+    transform: translateX(-50%) scale(1); /* Fades in and scales up smoothly */
+}
+
+.hero-image-box { flex: 0 0 35%; display: flex; justify-content: flex-end; }
+.image-frame-wrapper { position: relative; border-radius: 20px; padding: 10px; background: var(--card-bg); border: 1px solid var(--border-base); cursor: zoom-in; }
+.profile-pic { width: 100%; max-width: 260px; height: 320px; object-fit: cover; border-radius: 14px; display: block; filter: grayscale(25%); }
+
+/* ==========================================================================
+   4. TECH SHOWCASE STACK
+   ========================================================================== */
+.tools-showcase-section { max-width: 900px; margin: 4rem auto; padding: 0 1.5rem; }
+.tools-section-label { font-size: 0.75rem; text-transform: uppercase; color: var(--text-muted); margin-bottom: 1.5rem; font-weight: 600; letter-spacing: 1.5px; }
+.interactive-pop-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; }
+.interactive-pop-card { text-decoration: none; background: rgba(255, 255, 255, 0.04); border: 1px dotted var(--border-base); border-radius: 12px; padding: 1rem; display: flex; align-items: center; gap: 0.8rem; transition: var(--transition-smooth); }
+.interactive-pop-card:hover { background: rgba(255, 255, 255, 0.09); border-style: solid; border-color: var(--text-muted); transform: translateY(-2px); }
+body.light-mode .interactive-pop-card { background: rgba(255, 255, 255, 0.6); border-color: rgba(0, 0, 0, 0.08); }
+body.light-mode .interactive-pop-card:hover { background: rgba(255, 255, 255, 0.9); border-color: var(--text-muted); }
+.pop-icon-container { width: 32px; height: 32px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
+.pop-icon-container img { max-width: 100%; max-height: 100%; object-fit: contain; }
+.pop-card-info h4 { font-size: 0.9rem; font-weight: 650; color: var(--mono-high); }
+.pop-card-info p { font-size: 0.7rem; color: var(--text-muted); }
+
+.section-header-group { margin-bottom: 3rem; }
+.section-title { font-size: 2rem; font-weight: 700; color: var(--mono-high); letter-spacing: -0.75px; }
+
+/* ==========================================================================
+   5. ACADEMIC INFRASTRUCTURE
+   ========================================================================== */
+.education-container-mod { align-items: stretch; }
+.education-container-mod h3 { font-size: 1.5rem; font-weight: 700; color: var(--mono-high); margin-bottom: 0.4rem; letter-spacing: -0.3px; }
+
+/* Forces long academic degrees onto a single line */
+.single-line-text {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.edu-sub-title-role { font-size: 1.1rem; font-weight: 500; color: var(--text-muted); margin-bottom: 1.2rem; }
+.edu-timeline-span { font-size: 0.8rem; color: var(--text-muted); display: inline-flex; align-items: center; gap: 0.4rem; }
+.edu-honors-inline-group { display: flex; gap: 0.6rem; margin-bottom: 1.5rem; }
+.mono-badge { padding: 0.35rem 0.75rem; background: var(--card-bg); border: 1px solid var(--border-base); border-radius: 6px; font-size: 0.78rem; color: var(--text-main); }
+.font-bold { font-weight: 700; }
+.education-inline-coursework { border-top: 1px solid var(--border-base); padding-top: 1.2rem; font-size: 0.9rem; }
+
+/* Stripped card background so the raw transparent .png image can stand alone */
+.edu-profile-logo-card { 
+    width: 100%; 
+    height: 100%; 
+    min-height: 240px; 
+    background: transparent; 
+    border: none; 
+    border-radius: 20px; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    padding: 2rem; 
+    box-shadow: none;
+}
+
+/* Stripped grayscale filter and opacity filters to display the BSU logo in true color format */
+.edu-hero-structural-logo { 
+    max-width: 110px; 
+    object-fit: contain; 
+    filter: none; 
+    opacity: 1; 
+}
+
+/* Creates a row alignment to push the logo to the far right of the titles */
+.education-header-flex {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 2rem;
+}
+
+/* Restricts the logo block container size next to your text */
+.education-header-flex .edu-profile-logo-card {
+    width: auto;
+    min-height: auto;
+    padding: 0;
+}
+
+/* Responsive adjustment for small mobile screens */
+@media (max-width: 768px) {
+    .education-header-flex {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+}
+/* ==========================================================================
+   6. LANDSCAPE FEATURED PROJECTS & SCHOLARSHIPS UNIFIED MATRIX
+   ========================================================================== */
+.one-per-row-projects-stack { display: flex; flex-direction: column; gap: 4rem; }
+.landscape-project-row {
+    display: grid; grid-template-columns: 1.30fr 1fr; gap: 2.5rem;
+    align-items: center; background: var(--card-bg); border: 1px solid var(--border-base);
+    border-radius: 24px; padding: 1.75rem; transition: var(--transition-smooth);
+}
+.landscape-project-row:hover { border-color: rgba(255, 255, 255, 0.15); }
+body.light-mode .landscape-project-row:hover { border-color: rgba(0, 0, 0, 0.12); }
+
+.landscape-interactive-slider {
+    width: 100%; aspect-ratio: 16 / 10; position: relative;
+    border-radius: 14px; overflow: hidden; background: #000;
+    box-shadow: 0 16px 48px rgba(0,0,0,0.3);
+}
+.landscape-interactive-slider .modal-slider-viewport { cursor: zoom-in; width: 100%; height: 100%; position: relative; }
+.modal-slide-img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 0.35s ease; }
+.modal-slide-img.active { opacity: 1; z-index: 2; }
+
+.modal-carousel-nav {
+    position: absolute; top: 50%; transform: translateY(-50%);
+    width: 38px; height: 38px; border-radius: 50%;
+    background: rgba(10, 10, 12, 0.65); border: 1px solid rgba(255,255,255,0.12);
+    color: #fff; display: flex; align-items: center; justify-content: center;
+    cursor: pointer; z-index: 10; transition: var(--transition-smooth);
+}
+.modal-carousel-nav:hover { background: #fff; color: #000; border-color: #fff; }
+.arrow-prev { left: 0.75rem; }
+.arrow-next { right: 0.75rem; }
+
+.landscape-project-details { display: flex; flex-direction: column; height: 100%; justify-content: center; padding-right: 1rem; }
+.landscape-project-details .card-tech-row { display: flex; gap: 0.5rem; margin-bottom: 1rem; }
+.landscape-project-details .card-tech-row img { height: 18px; width: 18px; object-fit: contain; }
+.landscape-project-details h3 { font-size: 1.55rem; font-weight: 700; color: var(--mono-high); margin-bottom: 0.75rem; letter-spacing: -0.4px; }
+.landscape-project-details p { color: var(--text-muted); font-size: 0.92rem; line-height: 1.6; }
+
+.landscape-project-details .project-subtitle {
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--text-muted);
+    margin-top: -0.4rem;      /* Tightens the gap between the title and subtitle */
+    margin-bottom: 0.75rem;   /* Adds breathing room above the main description text */
+}
+
+/* ==========================================================================
+   7. CORE SKILLS HORIZONTAL TRACKS
+   ========================================================================== */
+.adam-skills-container { display: flex; flex-direction: column; border-top: 1px solid var(--border-base); }
+.adam-skills-row { display: grid; grid-template-columns: 240px 1fr; padding: 1.8rem 0; border-bottom: 1px solid var(--border-base); align-items: center; }
+.adam-skills-row:last-of-type { border-bottom: none; }
+.adam-row-label { font-size: 0.9rem; font-weight: 500; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; }
+.adam-row-content { display: flex; flex-wrap: wrap; gap: 0.6rem; align-items: center; }
+.adam-skill-item-pill { font-size: 0.85rem; font-weight: 500; color: var(--text-main); padding: 0.4rem 0.9rem; background: rgba(255, 255, 255, 0.02); border: 1px dotted var(--border-base); border-radius: 6px; display: inline-flex; align-items: center; gap: 0.5rem; transition: var(--transition-smooth); }
+.adam-skill-item-pill img { width: 16px; height: 16px; object-fit: contain; }
+.text-icon-fallback { font-size: 13px; color: var(--text-muted); width: 16px; text-align: center; }
+.adam-skill-item-pill:hover { background: rgba(255, 255, 255, 0.05); border-style: solid; border-color: var(--text-muted); }
+
+/* ==========================================================================
+   8. CERTIFICATIONS UNIFIED MEDIA GRID
+   ========================================================================== */
+.grid-layout-certificates { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.2rem; }
+.cert-card-mod { background: var(--card-bg); border: 1px solid var(--border-base); border-radius: 12px; overflow: hidden; display: flex; flex-direction: column; cursor: zoom-in; transition: var(--transition-smooth); }
+.cert-card-mod:hover { border-color: var(--text-muted); transform: translateY(-3px); }
+.cert-card-mod .card-image-wrapper { height: 140px; background: #000; overflow: hidden; }
+.cert-card-mod .card-image-wrapper img { width: 100%; height: 100%; object-fit: cover; }
+.cert-card-mod .card-info-content { padding: 1.2rem; display: flex; flex-direction: column; gap: 0.35rem; height: 180px; box-sizing: border-box;}
+.card-meta-date { font-family: monospace; font-size: 0.72rem; color: var(--text-muted); text-transform: uppercase; }
+.cert-card-mod h3 { font-size: 1.05rem; font-weight: 600; color: var(--mono-high); }
+.cert-card-mod p { font-size: 0.82rem; color: var(--text-muted); line-height: 1.4; }
+
+/* Updated layout block for the issuer rows */
+.cert-issuer-bottom {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    
+    /* CRITICAL FIX: This pushes the block to the exact bottom of the card content */
+    margin-top: auto; 
+    
+    font-family: 'Geist Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 0.82rem;
+    line-height: 1.4;
+    color: var(--text-muted);
+    text-transform: none;
+}
+
+/* Keep logo size proportional */
+.cert-issuer-logo {
+    width: 14px;
+    height: 14px;
+    object-fit: contain;
+    display: inline-block;
+}
+
+/* ==========================================================================
+   10. CONTACT MINIMAL FOOTER
+   ========================================================================== */
+.contact-clean-minimal-layout { max-width: 900px; margin: 0 auto; text-align: center; }
+.contact-standalone-icons-row { display: flex; justify-content: center; align-items: center; gap: 2.5rem; margin-bottom: 1rem; }
+.standalone-social-icon { font-size: 2.2rem; color: var(--text-muted); transition: var(--transition-smooth); display: inline-block; }
+.standalone-social-icon:hover { transform: scale(1.1) translateY(-4px); }
+.icon-linkedin:hover { color: #0077b5; }
+.icon-github:hover { color: var(--mono-high); }
+.icon-gmail:hover { color: var(--google-red); }
+
+.adam-giant-signature-container { margin-top: 6rem; text-align: center; pointer-events: none; user-select: none; }
+.adam-giant-title { font-size: 11rem; font-weight: 800; letter-spacing: -8px; line-height: 0.8; color: rgba(255,255,255,0.02); text-transform: uppercase; margin-bottom: 1rem; }
+body.light-mode .adam-giant-title { color: rgba(0,0,0,0.03); }
+.adam-giant-subtitle-row { display: flex; align-items: center; justify-content: center; gap: 1rem; max-width: 240px; margin: 0 auto; }
+.adam-sig-line { height: 1px; flex: 1; background: var(--border-base); }
+.adam-sig-caption { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 2px; color: var(--text-muted); font-weight: 600; }
+
+/* Tooltip Base Styling */
+.standalone-social-icon::after {
+    content: attr(data-tooltip); /* Pulls text from the HTML attribute */
+    position: absolute;
+    bottom: 100%; /* Places it safely above the icon */
+    left: 50%;
+    transform: translateX(-50%) scale(0.8); /* Centers and shrinks slightly for the pop effect */
+    color: #fff; /* White text */
+    padding: 6px 10px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-family: sans-serif;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none; /* Keeps it from blocking mouse clicks */
+    transition: all 0.2s ease-in-out;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 10; /* Ensures it stays on top of other elements */
+}
+
+/* Tooltip Hover Effect */
+.standalone-social-icon:hover::after {
+    opacity: 1;
+    transform: translateX(-50%) scale(1); /* Smoothly fades in and pops up */
+}
+
+/* ==========================================================================
+   11. LIGHTBOX SYSTEM VIEWPORTS
+   ========================================================================== */
+.global-media-lightbox-overlay {
+    position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+    z-index: 3000; background: rgba(4, 4, 5, 0.88); backdrop-filter: blur(16px);
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0; pointer-events: none; transition: opacity 0.3s ease; padding: 2rem;
+}
+.global-media-lightbox-overlay.is-active { opacity: 1; pointer-events: auto; }
+
+.lightbox-close-cross {
+    position: absolute; top: 1.5rem; right: 1.5rem;
+    width: 40px; height: 40px; border-radius: 50%;
+    background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #fff; font-size: 1.5rem; display: flex; align-items: center;
+    justify-content: center; cursor: pointer; z-index: 50; transition: var(--transition-smooth);
+}
+.lightbox-close-cross:hover { background: #fff; color: #000; transform: rotate(90deg); }
+
+.lightbox-document-view-container { max-width: 800px; width: 100%; max-height: 85vh; display: none; align-items: center; justify-content: center; }
+.lightbox-document-view-container img { max-width: 100%; max-height: 85vh; object-fit: contain; border-radius: 12px; box-shadow: 0 32px 64px rgba(0,0,0,0.5); }
+
+.lightbox-gallery-slider-window {
+    max-width: 1050px; width: 100%; aspect-ratio: 16 / 10;
+    display: none; position: relative; border-radius: 16px;
+    overflow: hidden; box-shadow: 0 32px 80px rgba(0,0,0,0.6);
+    background: #000; border: 1px solid rgba(255,255,255,0.08);
+}
+.lightbox-slider-viewport-wrapper { width: 100%; height: 100%; position: relative; }
+.lightbox-slider-viewport-wrapper .lightbox-slide-item-img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: contain; opacity: 0; transition: opacity 0.3s ease-in-out; }
+.lightbox-slider-viewport-wrapper .lightbox-slide-item-img.active { opacity: 1; }
+
+.global-media-lightbox-overlay[data-mode="single"] .lightbox-document-view-container { display: flex; }
+.global-media-lightbox-overlay[data-mode="gallery"] .lightbox-gallery-slider-window { display: block; }
+
+/* ==========================================================================
+   12. SYSTEM RESPONSIVENESS MATRIX
+   ========================================================================== */
+@media (max-width: 900px) {
+    .landscape-project-row { grid-template-columns: 1fr; gap: 1.75rem; }
+    .grid-layout-certificates { grid-template-columns: repeat(2, 1fr); }
+    .interactive-pop-grid { grid-template-columns: repeat(2, 1fr); }
+    .adam-skills-row { grid-template-columns: 1fr; gap: 0.5rem; padding: 1.2rem 0; }
+    .adam-gradient-edge { display: none; }
+}
+@media (max-width: 768px) {
+    .section { padding: 4rem 1rem; }
+    .nav-links { display: none; }
+    .hero-container, .education-container-mod { flex-direction: column !important; gap: 2rem; }
+    .hero-content, .hero-image-box { flex: 0 0 100%; }
+    .hero-image-box { justify-content: flex-start; }
+    .hero-content h1 { font-size: 2.8rem; }
+    .grid-layout-certificates, .interactive-pop-grid { grid-template-columns: 1fr; }
+    .lightbox-gallery-slider-window { aspect-ratio: 4/3; }
+}
+
+/* ==========================================================================
+   13. FOOTER PLATFORM CAPTION
+   ========================================================================== */
+.site-footer { border-top: 1px solid var(--border-base); padding: 3rem 1.5rem; background: var(--bg-dark); }
+.footer-container { max-width: 900px; margin: 0 auto; }
+.footer-status-row { display: flex; justify-content: space-between; align-items: center; color: var(--text-muted); font-size: 0.85rem; flex-wrap: wrap; gap: 1rem; }
+.location-stamp-centered { display: flex; align-items: center; gap: 0.4rem; }
+.adam-last-updated-tag { display: flex; align-items: center; gap: 0.5rem; }
+.status-pulse-dot { width: 8px; height: 8px; background-color: var(--google-green); border-radius: 50%; display: inline-block; }
+.footer-line-accent { height: 1px; width: 100%; background: linear-gradient(90deg, var(--border-base) 0%, transparent 100%); margin-top: 1.5rem; }
+
+/* --- Flow Alignment Fixes --- */
+.hero-inline-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-top: 1.5rem;
+}
+
+.quick-social-logos {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+/* --- Resume Button: Outline Mirror of View My Work with Icon --- */
+.btn-outline-resume {
+    /* Layout structure matching .btn & .btn-dark-mono */
+    padding: 0.8rem 1.8rem; 
+    font-weight: 600;
+    border-radius: 10px;
+    font-size: 0.9rem;
+    text-decoration: none;
+    cursor: pointer;
+    font-family: inherit;
+    transition: var(--transition-smooth);
+
+    /* Flex structure to center the download logo side-by-side with text */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem; /* Spacing between the download icon and the text */
+
+    /* Colors inverted from your dark-mono design tokens */
+    background-color: var(--bg-dark);
+    border: 1px solid var(--mono-high);
+    color: var(--text-main);
+}
+
+/* Icon layout alignment configuration overrides */
+.btn-outline-resume i {
+    margin: 0; /* Clears default margins to balance alignment */
+    font-size: 0.85rem;
+}
+
+/* Hover transitions matching the site standard */
+.btn-outline-resume:hover {
+    background-color: var(--mono-high);
+    color: var(--bg-dark);
+    transform: translateY(-2px);
+}
+
+/* --- Inverse Mirror Design: Light Mode Active (Black Border, Transparent Light Fill) --- */
+body.light-mode .btn-outline-resume {
+  border-color: #000000;
+  background-color: rgba(0, 0, 0, 0.05);
+  color: #000000;
+}
+
+body.light-mode .btn-outline-resume:hover {
+  background-color: rgba(0, 0, 0, 0.12);
+}
+
+/* Fallback for Data Theme Toggles instead of Body Classes */
+[data-theme="light"] .btn-outline-resume {
+  border-color: #000000;
+  background-color: rgba(0, 0, 0, 0.05);
+  color: #000000;
+}
+
+[data-theme="light"] .btn-outline-resume:hover {
+  background-color: rgba(0, 0, 0, 0.12);
+}
